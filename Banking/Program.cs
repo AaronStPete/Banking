@@ -16,10 +16,18 @@ namespace Banking
             const string USER_PATH = "../../../usertable.csv";
             using (var reader = new StreamReader(USER_PATH))
             {
-                while (reader.Peek() < -1)
+                while (reader.Peek() > -1)
                 {
                     var Line = reader.ReadLine().Split(',');
-                    usertable.Add(Line[0], Line[1]);
+                    if (!usertable.ContainsKey(Line[0]))
+                    {
+                        usertable.Add(Line[0], Line[1]);
+                    }
+                }
+                foreach (var instance in usertable)
+                {
+                    Console.WriteLine($"User table includes: {instance.Key} and {instance.Value}");
+
                 }
             }
 
@@ -62,14 +70,13 @@ namespace Banking
 
                     if (confirmation == "yes" || confirmation == "y")
                     {
-                        ///TODO: save to usertable
-                        ///
+                        /// save to usertable.csv
                         using (var writer = new StreamWriter(USER_PATH))
                         {
                             usertable.Add(user.Name, user.Password);
                             foreach (var Person in usertable)
                             {
-                                writer.WriteLine($"{user.Name},{user.Password}");
+                                writer.WriteLine($"{Person.Key},{Person.Value}");
                             }
                         }
 
