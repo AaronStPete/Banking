@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,18 @@ namespace Banking
     {
         static void Main(string[] args)
         {
+            ///Loading Usertable into application
+            var usertable = new Dictionary<string, string>();
+            const string USER_PATH = "../../../usertable.csv";
+            using (var reader = new StreamReader(USER_PATH))
+            {
+                while (reader.Peek() < -1)
+                {
+                    var Line = reader.ReadLine().Split(',');
+                    usertable.Add(Line[0], Line[1]);
+                }
+            }
+
             Console.WriteLine("Welcome to Banking.");
             Console.WriteLine("Would you like to (login) or create a (new) account?");
             string input = Console.ReadLine();
@@ -49,7 +62,17 @@ namespace Banking
 
                     if (confirmation == "yes" || confirmation == "y")
                     {
-                        ///save to usertable
+                        ///TODO: save to usertable
+                        ///
+                        using (var writer = new StreamWriter(USER_PATH))
+                        {
+                            usertable.Add(user.Name, user.Password);
+                            foreach (var Person in usertable)
+                            {
+                                writer.WriteLine($"{user.Name},{user.Password}");
+                            }
+                        }
+
                         completedLogin = true;
                     }
                 }
