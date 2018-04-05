@@ -18,7 +18,7 @@ namespace Banking
             {
                 /// prompt for name
                 Console.WriteLine("Please login with your name:");
-                Console.ReadLine();
+                Console.ReadLine().ToLower();
 
                 /// prompt for password
                 Console.WriteLine("Please enter your password");
@@ -27,19 +27,32 @@ namespace Banking
             }
             else if (input == "new")
             {
-                /// generate user
+                var completedLogin = false;
+                while (completedLogin == false)
+                {
+                    /// generate user
 
-                /// prompt for name
-                Console.WriteLine("");
-                /// store name
-                Console.ReadLine();
+                    /// prompt for name
+                    Console.WriteLine("Please enter the name you will login with.");
+                    /// store name
+                    var nameInput = Console.ReadLine().ToLower();
 
+                    /// prompt for password
+                    Console.WriteLine("Please enter the password you will login with.");
+                    /// store password
+                    var passInput = Console.ReadLine();
 
-                /// prompt for password
-                Console.WriteLine("");
-                /// store password
-                Console.ReadLine();
+                    var user = new User(nameInput, passInput);
 
+                    Console.WriteLine($"{user.Name} and {user.Password} are correct? (yes) or (no)");
+                    var confirmation = Console.ReadLine().ToLower();
+
+                    if (confirmation == "yes" || confirmation == "y")
+                    {
+                        ///save to usertable
+                        completedLogin = true;
+                    }
+                }
             }
         }
     }
