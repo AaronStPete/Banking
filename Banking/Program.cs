@@ -30,59 +30,79 @@ namespace Banking
 
                 }
             }
-
-            Console.WriteLine("Welcome to Banking.");
-            Console.WriteLine("Would you like to (login) or create a (new) account?");
-            string input = Console.ReadLine();
-
-            if (input == "login")
+            var stillBanking = true;
+            while (stillBanking)
             {
-                /// prompt for name
-                Console.WriteLine("Please login with your name:");
-                Console.ReadLine().ToLower();
+                Console.WriteLine("Welcome to Banking.");
+                Console.WriteLine("Would you like to (login) or create a (new) account?");
+                string input = Console.ReadLine().ToLower();
+                var currentUser = "";
 
-                /// prompt for password
-                Console.WriteLine("Please enter your password");
-                Console.ReadLine();
-
-            }
-            else if (input == "new")
-            {
-                var completedLogin = false;
-                while (completedLogin == false)
+                if (input == "login")
                 {
-                    /// generate user
-
-                    /// prompt for name
-                    Console.WriteLine("Please enter the name you will login with.");
-                    /// store name
-                    var nameInput = Console.ReadLine().ToLower();
-
-                    /// prompt for password
-                    Console.WriteLine("Please enter the password you will login with.");
-                    /// store password
-                    var passInput = Console.ReadLine();
-
-                    var user = new User(nameInput, passInput);
-
-                    Console.WriteLine($"{user.Name} and {user.Password} are correct? (yes) or (no)");
-                    var confirmation = Console.ReadLine().ToLower();
-
-                    if (confirmation == "yes" || confirmation == "y")
+                    var completedLogin = false;
+                    while (completedLogin == false)
                     {
-                        /// save to usertable.csv
-                        using (var writer = new StreamWriter(USER_PATH))
+                        /// prompt for name
+                        Console.WriteLine("Please login with your name:");
+                        var nameInput = Console.ReadLine().ToLower();
+
+                        /// prompt for password
+                        Console.WriteLine("Please enter your password");
+                        var passInput = Console.ReadLine();
+
+                        bool ValidateCredentials(string username, string password)
                         {
-                            usertable.Add(user.Name, user.Password);
-                            foreach (var Person in usertable)
-                            {
-                                writer.WriteLine($"{Person.Key},{Person.Value}");
-                            }
+                            return usertable.Any(validate => validate.Key == username && validate.Value == password);
                         }
 
-                        completedLogin = true;
+                        if (ValidateCredentials(nameInput, passInput))
+                        {
+                            completedLogin = true;
+                            currentUser = nameInput;
+                        }
+                        Console.WriteLine("Login Failed, please try again.");
+                    }
+                    Console.Clear();
+                    var displayName = currentUser.First().ToString().ToUpper() + currentUser.Substring(1);
+                    Console.WriteLine($"Hi {(displayName)}!");
+                }
+                else if (input == "new")
+                {
+                    var completedLogin = false;
+                    while (completedLogin == false)
+                    {
+                        Console.WriteLine("Please enter the name you will login with.");
+                        var nameInput = Console.ReadLine().ToLower();
+
+                        Console.WriteLine("Please enter the password you will login with.");
+                        var passInput = Console.ReadLine();
+
+                        var user = new User(nameInput, passInput);
+
+                        Console.WriteLine($"{user.Name} and {user.Password} are correct? (yes) or (no)");
+                        var confirmation = Console.ReadLine().ToLower();
+
+                        if (confirmation == "yes" || confirmation == "y")
+                        {
+                            using (var writer = new StreamWriter(USER_PATH))
+                            {
+                                usertable.Add(user.Name, user.Password);
+                                foreach (var Person in usertable)
+                                {
+                                    writer.WriteLine($"{Person.Key},{Person.Value}");
+                                }
+                            }
+
+                            completedLogin = true;
+                        }
                     }
                 }
+                else if (input == "done" || input == "close" || input == "exit" || input == "stop")
+                {
+                    stillBanking = false;
+                }
+                ///we're still banking....
             }
         }
     }
