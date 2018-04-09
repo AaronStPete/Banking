@@ -10,12 +10,22 @@ namespace Banking
     {
         public string Name { get; set; }
         public string Password { get; set; }
-        ///public Account Accounts { get; set; }
+        public Account Checking { get; set; }
+        public Account Savings { get; set; }
 
-        public User(string name, string password)
+        public User (string name, string password, Account Checking, Account Savings)
         {
-            Name = name;
-            Password = password;
+            this.Name = name;
+            this.Password = password;
+            this.Checking = Checking;
+            this.Savings = Savings;
+            
+        }
+
+        public User (string name, string password)
+        {
+            this.Name = name;
+            this.Password = password;
         }
     }
 }

@@ -27,7 +27,6 @@ namespace Banking
                 foreach (var instance in usertable)
                 {
                     Console.WriteLine($"User table includes: {instance.Key} and {instance.Value}");
-
                 }
             }
             var stillBanking = true;
@@ -66,6 +65,41 @@ namespace Banking
                     Console.Clear();
                     var displayName = currentUser.First().ToString().ToUpper() + currentUser.Substring(1);
                     Console.WriteLine($"Hi {(displayName)}!");
+
+                    Console.WriteLine("Would you like to (display) your account, access (transactions), or account (options)?");
+                    var loggedInput = Console.ReadLine().ToLower();
+
+                    var loggedInOptions = false;
+                    while (loggedInOptions == false)
+                    {
+                    ////TODO: HOW TO KEEP A USER LOGGED IN AND REFERENCE THAT USER'S INFO?
+                        User loggedInUser = User();
+                        if (loggedInput == "display")
+                        {
+                            /// display accounts
+                            foreach (var item in user)
+                            {
+                                Console.WriteLine(.checking);
+                            }
+                        }
+                        else if (loggedInput == "transactions")
+                        {
+                            /// offer menu of options
+                            /// - transactions
+                            /// -- deposit
+                            /// -- withdraw
+                            /// -- transfer
+                            /// -- view transaction history
+                        }
+                        else if (loggedInput == "options")
+                        {
+                            /// - account options
+                            /// -- change password
+                            /// -- new account
+                            /// -- close account
+                            /// -- leave bank
+                        }
+                    }
                 }
                 else if (input == "new")
                 {
@@ -78,7 +112,12 @@ namespace Banking
                         Console.WriteLine("Please enter the password you will login with.");
                         var passInput = Console.ReadLine();
 
-                        var user = new User(nameInput, passInput);
+                        ///var user = new User(nameInput, passInput);
+
+                        Account checking = new Account();
+                        Account savings = new Account();
+
+                        var user = new User(nameInput, passInput, checking, savings);
 
                         Console.WriteLine($"{user.Name} and {user.Password} are correct? (yes) or (no)");
                         var confirmation = Console.ReadLine().ToLower();
